@@ -11,6 +11,40 @@ export const getErrorDetails = (err: unknown) => {
       statusCode = err.statusCode;
     }
 
+    // MongoDb Errors
+    else if (
+      typeof err === 'object' &&
+      'name' in err &&
+      err.name === 'CastError' &&
+      'value' in err &&
+      'path' in err
+    ) {
+      message = `Invalid value ${err.value} for the field ${err.path}`;
+      statusCode = 400;
+    } else if (
+      typeof err === 'object' &&
+      'code' in err &&
+      err.code === 11000 &&
+      'keyValue' in err
+    ) {
+      let field: unknown, fieldValue: unknown;
+      for (const [key, value] of Object.entries(err.keyValue as 'object')) {
+        field = key;
+        fieldValue = value;
+      }
+      message = `There already exists a User with ${field} = ${fieldValue}, Enter a different value for ${field}`;
+      statusCode = 400;
+    } else if (
+      typeof err === 'object' &&
+      'name' in err &&
+      err.name === 'ValidationError' &&
+      'message' in err
+    ) {
+      console.log(err.message);
+      message = err.message as string;
+      statusCode = 400;
+      // console.log(Object.values(err.errors).map((val) => val.message));
+    }
 
     // Other Generic Errors
     else if (err instanceof Error) {
