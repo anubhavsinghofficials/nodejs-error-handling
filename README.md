@@ -40,3 +40,13 @@
   - Other application specific errors, eg: MongoDB errors (see get-error-details function in the code)
 
 - These are just few examples of errors, there can be many!!, Hence, a proper error handling mechanisms are necessary to gracefully handle these erreors. So how do we do that?
+
+### Error Catching & Handling
+
+- Since Error propagation up in stack, Error Catching refers to Identifying and handling of those errots. Some examples of handling mechanisms are:
+  - Try catch wrapper
+  - global error handler middleware (express only)
+  - Unchaught Exceptions
+  - Uncaught Promise Rejections
+
+- See the codebase to see how these are implemented
